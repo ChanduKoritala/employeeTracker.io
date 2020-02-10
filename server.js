@@ -18,7 +18,7 @@ var viewOptions = [
     "View Departments",
     "View Roles",
     "View Employees",
-
+    "Add Options",
     "Update Employee",
     "exit"
 ];
@@ -58,29 +58,39 @@ function selectOptions() {
                 break;
             case viewOptions[1]:
                 roleView();
-            break;
+                break;
+
+            case viewOptions[3]:
+                insertOptions();
+                break;
+
 
         }
 
-        insertOptions();
+
     })
-    
+
 }
-function insertOptions(){
+
+
+
+function insertOptions() {
     inquirer.prompt({
         name: "name",
         type: "list",
         message: "Please choose an option to insert",
         choices: addOptions
-    }).then(function(answer){
-        switch(answer.insert){
-            case addOptions[0] :
+    }).then(function (answer) {
+        switch (answer.insert) {
+            case addOptions[0]:
                 insertDepartment();
                 break;
 
         }
+
+
     })
-    
+
 }
 
 function departmentView() {
@@ -102,9 +112,9 @@ function employeeView() {
         if (err) throw err;
 
         console.table(result)
-            selectOptions();
+        selectOptions();
 
-        })
+    })
 }
 
 function roleView() {
@@ -123,11 +133,11 @@ function insertDepartment(data) {
     connection.query("INSERT INTO department SET", {
         name: data.name
 
-    }, function(err, result){
+    }, function (err, result) {
         if (err) throw err;
 
         console.table(result);
-        insertOptions();
+
     })
 
 }
