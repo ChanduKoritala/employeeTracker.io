@@ -18,7 +18,7 @@ var viewOptions = [
     "View Departments",
     "View Roles",
     "View Employees",
-    "Add Options",
+    "Insert Options",
     "Update Employee",
     "exit"
 ];
@@ -32,15 +32,11 @@ var addOptions = [
 
 var updateOptions = [
 
-    "First Name",
-    "Last Name",
-    "Role",
-    "Manager"
+    "Click here"
 
 ];
 
 selectOptions();
-
 
 function selectOptions() {
     inquirer.prompt({
@@ -70,8 +66,6 @@ function selectOptions() {
     })
 }
 
-
-
 function insertOptions() {
     inquirer.prompt({
         name: "name",
@@ -86,18 +80,11 @@ function insertOptions() {
             case addOptions[1]:
                 insertRole();
                 break;
-
             case addOptions[2]:
                 insertEmployee();
                 break;
-
         }
-
-        insertDepartment();
-        insertEmployee();
-        insertRole();
     })
-
 };
 
 function departmentView() {
@@ -136,27 +123,18 @@ function roleView() {
 }
 
 function insertDepartment() {
-
     inquirer.prompt({
-
         name: "name",
         type: "input",
         message: "Enter department: ",
-
     }).then(function (response) {
-
         connection.query("INSERT INTO department SET ?", {
             name: response.name
-
         }, function (err, result) {
             if (err) throw err;
-
             console.table(result);
-
         })
-
     })
-
 };
 
 function insertRole() {
@@ -235,62 +213,61 @@ function updateEmployeeOptions() {
         type: "list",
         message: "Please choose an option to update: ",
         choices: updateOptions
-    }).then(function(data) {
+    }).then(function (data) {
         switch (data.name) {
             case updateOptions[0]:
                 updateEmployee()
-            break;
+                break;
         }
     });
+
+
 }
 
-function updateEmployee(){
+function updateEmployee() {
 
-        inquirer.prompt([
-            
-            {
-                type: "input",
-                message: "Enter Employee id to update: ",
-                name: "empID",
-              },
-            {
-    
-                name: "firstName",
-                type: "input",
-                message: "Enter Employee's First Name: "
-    
-            },
-            {
-                name: "lastName",
-                type: "input",
-                message: "Enter Employee's last Name:"
-    
-            },
-            {
-                name: "role",
-                type: "input",
-                message: "Enter Employee's title:"
-            },
-            {
-                name: "manager",
-                type: "input",
-                message: "Enter Manager Name:"
-            }
-    
-        ]).then(function (data) {
-    
-            var queryStr = `UPDATE employee SET first_name= ${data.firstName}, last_name= ${data.lastname},`;
-            queryStr +=  `role_id = ${data.role}, manager_id = ${data.manager}`;
-            queryStr += `WHERE id = ${data.empID}`,
-            connection.query(queryStr,
-             function (err, result) {
+    inquirer.prompt([
+
+        {
+            type: "input",
+            message: "Enter Employee id to update: ",
+            name: "empID",
+        },
+        {
+
+            name: "firstName",
+            type: "input",
+            message: "Enter Employee's First Name: "
+
+        },
+        {
+            name: "lastName",
+            type: "input",
+            message: "Enter Employee's last Name:"
+
+        },
+        {
+            name: "role_id",
+            type: "input",
+            message: "Enter Role ID:"
+        },
+        {
+            name: "manager_id",
+            type: "input",
+            message: "Enter Manager ID:"
+        }
+
+    ]).then(function (data) {
+
+        var queryStr = `UPDATE employee SET first_name= '${data.firstName}', last_name= '${data.lastName}',`;
+        queryStr += ` role_id = ${data.role_id}, manager_id = ${data.manager_id}`;
+        queryStr += ` WHERE id = ${data.empID}`;
+
+        connection.query(queryStr,
+            function (err, result) {
                 if (err) throw err;
-    
                 console.table(result);
-    
             })
-    
-        })
-    
-    };
-    
+
+    })
+};
