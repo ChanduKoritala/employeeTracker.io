@@ -84,8 +84,13 @@ function insertOptions() {
                 insertEmployee();
                 break;
         }
+
+        
     })
+    
 };
+
+
 
 function departmentView() {
     connection.query("select * from department", function (err, result) {
@@ -135,6 +140,7 @@ function insertDepartment() {
             console.table(result);
         })
     })
+    
 };
 
 function insertRole() {
@@ -178,14 +184,14 @@ function insertEmployee() {
 
         },
         {
-            name: "title",
+            name: "title_id",
             type: "input",
-            message: "Enter Employee's title:"
+            message: "Enter Employee's Title ID:"
         },
         {
-            name: "manager",
+            name: "manager_id",
             type: "input",
-            message: "Enter Manager Name:"
+            message: "Enter Manager ID:"
         }
 
     ]).then(function (data) {
@@ -193,8 +199,8 @@ function insertEmployee() {
         connection.query("INSERT INTO employee SET ?", {
             first_name: data.firstName,
             last_name: data.lastName,
-            role_id: data.title,
-            manager_id: data.manager
+            role_id: data.title_id,
+            manager_id: data.manager_id
 
         }, function (err, result) {
             if (err) throw err;
