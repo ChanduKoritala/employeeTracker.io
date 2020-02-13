@@ -35,7 +35,7 @@ var updateOptions = [
     "First Name",
     "Last Name",
     "Role",
-    "exit"
+    "Manager"
 
 ];
 
@@ -63,13 +63,11 @@ function selectOptions() {
             case viewOptions[3]:
                 insertOptions();
                 break;
-
-
+            case viewOptions[4]:
+                updateEmployeeOptions();
+                break;
         }
-
-
     })
-
 }
 
 
@@ -81,7 +79,7 @@ function insertOptions() {
         message: "Please choose an option to insert",
         choices: addOptions
     }).then(function (answer) {
-        switch (answer.insert) {
+        switch (answer.name) {
             case addOptions[0]:
                 insertDepartment();
                 break;
@@ -89,9 +87,14 @@ function insertOptions() {
                 insertRole();
                 break;
 
+            case addOptions[2]:
+                insertEmployee();
+                break;
+
         }
 
         insertDepartment();
+        insertEmployee();
         insertRole();
     })
 
@@ -180,4 +183,114 @@ function insertRole() {
 
 };
 
+function insertEmployee() {
 
+    inquirer.prompt([
+        {
+
+            name: "firstName",
+            type: "input",
+            message: "Enter Employee's First Name: "
+
+        },
+        {
+            name: "lastName",
+            type: "input",
+            message: "Enter Employee's last Name:"
+
+        },
+        {
+            name: "title",
+            type: "input",
+            message: "Enter Employee's title:"
+        },
+        {
+            name: "manager",
+            type: "input",
+            message: "Enter Manager Name:"
+        }
+
+    ]).then(function (data) {
+
+        connection.query("INSERT INTO employee SET ?", {
+            first_name: data.firstName,
+            last_name: data.lastName,
+            role_id: data.title,
+            manager_id: data.manager
+
+        }, function (err, result) {
+            if (err) throw err;
+
+            console.table(result);
+
+        })
+
+    })
+
+};
+
+function updateEmployeeOptions() {
+    inquirer.prompt({
+        name: "name",
+        type: "list",
+        message: "Please choose an option to update: ",
+        choices: updateOptions
+    }).then(function(data) {
+        switch (data.name) {
+            case updateOptions[0]:
+                updateEmployee()
+            break;
+        }
+    });
+}
+
+function updateEmployee(){
+
+        inquirer.prompt([
+            
+            {
+                type: "input",
+                message: "Enter Employee id to update: ",
+                name: "empID",
+              },
+            {
+    
+                name: "firstName",
+                type: "input",
+                message: "Enter Employee's First Name: "
+    
+            },
+            {
+                name: "lastName",
+                type: "input",
+                message: "Enter Employee's last Name:"
+    
+            },
+            {
+                name: "role",
+                type: "input",
+                message: "Enter Employee's title:"
+            },
+            {
+                name: "manager",
+                type: "input",
+                message: "Enter Manager Name:"
+            }
+    
+        ]).then(function (data) {
+    
+            var queryStr = `UPDATE employee SET first_name= ${data.firstName}, last_name= ${data.lastname},`;
+            queryStr +=  `role_id = ${data.role}, manager_id = ${data.manager}`;
+            queryStr += `WHERE id = ${data.empID}`,
+            connection.query(queryStr,
+             function (err, result) {
+                if (err) throw err;
+    
+                console.table(result);
+    
+            })
+    
+        })
+    
+    };
+    
