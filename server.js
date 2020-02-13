@@ -85,13 +85,17 @@ function insertOptions() {
             case addOptions[0]:
                 insertDepartment();
                 break;
+            case addOptions[1]:
+                insertRole();
+                break;
 
         }
 
-
+        insertDepartment();
+        insertRole();
     })
 
-}
+};
 
 function departmentView() {
     connection.query("select * from department", function (err, result) {
@@ -128,16 +132,52 @@ function roleView() {
 
 }
 
-function insertDepartment(data) {
+function insertDepartment() {
 
-    connection.query("INSERT INTO department SET", {
-        name: data.name
+    inquirer.prompt({
 
-    }, function (err, result) {
-        if (err) throw err;
+        name: "name",
+        type: "input",
+        message: "Enter department: ",
 
-        console.table(result);
+    }).then(function (response) {
+
+        connection.query("INSERT INTO department SET ?", {
+            name: response.name
+
+        }, function (err, result) {
+            if (err) throw err;
+
+            console.table(result);
+
+        })
 
     })
 
-}
+};
+
+function insertRole() {
+
+    inquirer.prompt({
+
+        name: "title",
+        type: "input",
+        message: "Enter Role: ",
+
+    }).then(function (data) {
+
+        connection.query("INSERT INTO role SET ?", {
+            title: data.title
+
+        }, function (err, result) {
+            if (err) throw err;
+
+            console.table(result);
+
+        })
+
+    })
+
+};
+
+
