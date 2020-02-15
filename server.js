@@ -138,6 +138,7 @@ function insertDepartment() {
         }, function (err, result) {
             if (err) throw err;
             console.table(result);
+            selectOptions();
         })
     })
     
@@ -160,7 +161,7 @@ function insertRole() {
             if (err) throw err;
 
             console.table(result);
-
+            selectOptions();
         })
 
     })
@@ -206,7 +207,7 @@ function insertEmployee() {
             if (err) throw err;
 
             console.table(result);
-
+            selectOptions();
         })
 
     })
@@ -273,6 +274,7 @@ function updateEmployee() {
             function (err, result) {
                 if (err) throw err;
                 console.table(result);
+                selectOptions();
             })
 
     })
